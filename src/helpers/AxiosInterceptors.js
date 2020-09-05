@@ -15,21 +15,23 @@ const responseHandler = (response) => {
 
 /**
  * Error
- *  !sent
- *    return promise rejection error
- *  sent + !responded ?
- *    return promise rejection error
- *  sent + responded ?
- *    !401 ? return promise rejection error
- *    401 ? REFRESH
- *      !sent
- *        return promise rejection error
- *      sent + !responded ?
- *        return promise rejection error
- *      sent + responded ?
- *        200 ? update token and retry original request
- *        401 ? invalid refresh token, relogin
- *        * ? unknown case, relogin
+ *     !sent
+ *         return promise rejection error
+ *     sent + !responded ?
+ *         return promise rejection error
+ *     sent + responded ?
+ *         !401 ? return promise rejection error
+ *         401 & no refresh token ? login
+ *         401 & refresh token ? REFRESH
+ *             !sent
+ *                 return promise rejection error
+ *             sent + !responded ?
+ *                 return promise rejection error
+ *             sent + responded ?
+ *                 200 ? update token and retry original request
+ *                 477 ? invalid refresh token, relogin
+ *                 * ? unknown case, relogin
+ *         401 on retry ? relogin
  *
  */
 
@@ -78,6 +80,7 @@ const UnauthorizedHandler = async (error) => {
           // Invalid refresh token
           return Promise.reject({
             failedRefresh: true,
+            invalidRefreshToken: true,
             sent: true,
             responded: true,
             request: err.request,
