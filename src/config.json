@@ -1,4 +1,7 @@
 {
     "weatherApiUrl": "http://api.openweathermap.org/data/2.5",
-    "weatherApiKey": "ffc3012c0d439cd179e4cf1c25117ed9"
+    "weatherApiKey": "ffc3012c0d439cd179e4cf1c25117ed9",
+    "tokenStorageKey": "auth-token",
+    "refreshTokenStorageKey": "refresh-token",
+    "apiUrl": "http://localhost:5000"
 }
